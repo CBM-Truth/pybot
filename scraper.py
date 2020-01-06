@@ -10,7 +10,6 @@ import discord
 import io
 import aiohttp
 
-
 class DiscordRedditScraper:
     """
     Reddit Scraper Object
@@ -103,6 +102,9 @@ class DiscordRedditScraper:
         return ret_str
 
     async def scrape(self, subreddits, _max):
+        """
+        Scraping routine
+        """
         subs = [sub + 'porn' if 'porn' not in sub else sub
                 for sub in subreddits.replace(' ', '').split(',')]
 
@@ -116,12 +118,12 @@ class DiscordRedditScraper:
             await self.ctx.send('{} compatible images detected'.format(str(len(compatible_posts))))
             await self.ctx.send('Collecting images...\n')
 
-            for idx, post in enumerate(compatible_posts):
-                async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession() as session:
+                for idx, post in enumerate(compatible_posts):
                     async with session.get(self.__cleanup_url(post.url)) as resp:
                         if resp.status == 200:
                             data = io.BytesIO(await resp.read())
                             await self.ctx.send(file=discord.File(data, self.__cleanup_url(str(idx+1))))
-                            
+                                
 
 

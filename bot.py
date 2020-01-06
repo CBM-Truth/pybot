@@ -1,21 +1,9 @@
 import discord
 from discord.ext import commands
 from scraper import DiscordRedditScraper
-from token import TOKEN
+from bot_token import TOKEN
 
 bot = commands.Bot(command_prefix='!')
-
-@bot.command()
-async def test(ctx, arg):
-    print('processing command...')
-    print(arg)
-    await ctx.send('Received command argument: {}'.format(arg))
-
-    if not arg:
-        await ctx.send('You must supply an argument to the "test" command')
-
-    print('Called test command')
-    print(arg, type(arg))
 
 @bot.command()
 async def scrape(ctx, subreddit, _max):
@@ -26,5 +14,14 @@ async def scrape(ctx, subreddit, _max):
         user_agent='windows:cbm.projects.redditscraper:v2.0 (by /u/PTTruTH)',
     )
     await scraper_client.scrape(subreddit, _max)
+
+@bot.command()
+async def log(ctx, message):
+    print('logging...')
+    await ctx.send_message(message.author, message)
+
+
+@bot.command()
+async def 
 
 bot.run(TOKEN)
